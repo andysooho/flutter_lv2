@@ -40,7 +40,9 @@ class CustomTeextFormField extends StatelessWidget {
         ),
         fillColor: INPUT_BG_COLOR,
         filled: true, //배경색 채우기 true로 해야 나옴
-        border: baseBorder, //모든 Input 상태의 기본 스타일 세팅
+        //모든 Input 상태의 기본 스타일 세팅
+        border: baseBorder,
+        enabledBorder: baseBorder,
         focusedBorder: baseBorder.copyWith(
           borderSide : baseBorder.borderSide.copyWith(
             color: PRIMARY_COLOR,
