@@ -6,8 +6,8 @@ class RestaurantCard extends StatelessWidget {
   final String name;
   final List<String> tags; //식당의 태그들
   final int ratingsCount;
-  final double deliveryTime;
-  final double deliveryFee;
+  final int deliveryTime;
+  final int deliveryFee;
   final double ratings;
 
   const RestaurantCard({
