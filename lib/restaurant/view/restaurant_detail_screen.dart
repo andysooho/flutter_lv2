@@ -54,34 +54,13 @@ class RestaurantDetailScreen extends StatelessWidget {
                 model: item,
               ),
               renderLabel(),
-              renderProducts(),
+              renderProducts(
+                products: item.products,
+              ),
             ],
           );
         },
       ),
-
-      // Column(
-      //   children: [
-      //     RestaurantCard(
-      //       image: Image.asset(
-      //         'asset/img/food/ddeok_bok_gi.jpg',
-      //         fit: BoxFit.cover,
-      //       ),
-      //       name: '불타는 떡복이',
-      //       tags: ['떡볶이', '분식', '치즈'],
-      //       ratingsCount: 100,
-      //       deliveryTime: 30,
-      //       deliveryFee: 3000,
-      //       ratings: 4.76,
-      //       isDetail: true,
-      //       detail: '떡볶이는 맛있어요',
-      //     ),
-      //     Padding(
-      //       padding: const EdgeInsets.symmetric(vertical: 16.0),
-      //       child: ProductCard(),
-      //     ),
-      //   ],
-      // ),
     );
   }
 
@@ -100,18 +79,24 @@ class RestaurantDetailScreen extends StatelessWidget {
     );
   }
 
-  SliverPadding renderProducts() {
+  SliverPadding renderProducts({
+    required List<RestaurantProductModel> products,
+  }) {
     return SliverPadding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       sliver: SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
+            final model = products[index]; //products의 index번째를 model에 넣음
+
             return Padding(
               padding: const EdgeInsets.only(top: 16.0),
-              child: ProductCard(),
+              child: ProductCard.fromModel(
+                model: model,
+              ),
             );
           },
-          childCount: 10,
+          childCount: products.length,
         ),
       ),
     );
