@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import '../const/colors.dart';
 
-class CustomTeextFormField extends StatelessWidget {
+class CustomTextFormField extends StatelessWidget {
   final String? hintText;
   final String? errorText;
   final bool obscureText; //비밀번호 입력시 * 으로 나오는거
   final bool autofocus;
   final ValueChanged<String>? onChanged;
 
-  const CustomTeextFormField({
+  const CustomTextFormField({
     this.hintText,
     this.errorText,
     this.obscureText = false,

@@ -49,14 +49,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   'asset/img/misc/logo.png',
                   width: MediaQuery.of(context).size.width * 0.66,
                 ),
-                CustomTeextFormField(
+                CustomTextFormField(
                   hintText: '이메일을 입력하세요',
                   onChanged: (String value) {
                     username = value;
                   },
                 ),
                 const SizedBox(height: 12.0),
-                CustomTeextFormField(
+                CustomTextFormField(
                   hintText: '비밀번호를 입력하세요',
                   onChanged: (String value) {
                     password = value;
