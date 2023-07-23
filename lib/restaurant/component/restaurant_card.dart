@@ -68,7 +68,7 @@ class RestaurantCard extends StatelessWidget {
             children: [
               Text(
                 name,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 20.0,
                   fontWeight: FontWeight.w500,
                 ),
@@ -76,7 +76,7 @@ class RestaurantCard extends StatelessWidget {
               const SizedBox(height: 8.0),
               Text(
                 tags.join(' · '),
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 14.0,
                   color: BODY_TEXT_COLOR,
                 ),
@@ -118,8 +118,8 @@ class RestaurantCard extends StatelessWidget {
   }
 
   Widget renderDot(){
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4.0),
       child: Text(
         '·',
         style: TextStyle(
@@ -156,7 +156,7 @@ class _IconText extends StatelessWidget {
         const SizedBox(width: 8.0),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 12.0,
             fontWeight: FontWeight.w500,
             color: BODY_TEXT_COLOR,

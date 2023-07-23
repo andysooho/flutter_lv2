@@ -39,7 +39,7 @@ class RestaurantDetailScreen extends StatelessWidget {
         future: getRestaurantDetail(),
         builder: (_, AsyncSnapshot<Map<String, dynamic>> snapshot) {
           if (!snapshot.hasData) {
-            return Center(
+            return const Center(
                 child: CircularProgressIndicator()
             );
           }
@@ -67,7 +67,7 @@ class RestaurantDetailScreen extends StatelessWidget {
   SliverPadding renderLabel() {
     return const SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
-      sliver: SliverToBoxAdapter(
+      sliver: SliverToBoxAdapter( //일반 위젯
         child: Text(
           '메뉴',
           style: TextStyle(

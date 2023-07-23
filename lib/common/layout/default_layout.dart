@@ -34,7 +34,7 @@ class DefaultLayout extends StatelessWidget {
       elevation: 0, //그림자 없애기
       title: Text(
         title!,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
         fontSize: 16.0,
         fontWeight: FontWeight.w500,
