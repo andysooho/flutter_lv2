@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/const/data.dart';
+import 'package:flutter_lv2/common/dio/dio.dart';
 import 'package:flutter_lv2/common/layout/default_layout.dart';
 import 'package:flutter_lv2/product/component/product_card.dart';
 import 'package:flutter_lv2/restaurant/component/restaurant_card.dart';
@@ -17,8 +18,14 @@ class RestaurantDetailScreen extends StatelessWidget {
 
   Future<RestaurantDetailModel> getRestaurantDetail() async {
     final dio = Dio();
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage,
+      ),
+    );
 
-    final repository = RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
+    final repository =
+        RestaurantRepository(dio, baseUrl: 'http://$ip/restaurant');
 
     return repository.getRestaurantDetail(id: id);
   }
@@ -30,7 +37,7 @@ class RestaurantDetailScreen extends StatelessWidget {
       child: FutureBuilder<RestaurantDetailModel>(
         future: getRestaurantDetail(),
         builder: (_, AsyncSnapshot<RestaurantDetailModel> snapshot) {
-          if(snapshot.hasError) {
+          if (snapshot.hasError) {
             return Center(
               child: Text(
                 snapshot.error.toString(),
@@ -38,9 +45,7 @@ class RestaurantDetailScreen extends StatelessWidget {
             );
           }
           if (!snapshot.hasData) {
-            return const Center(
-                child: CircularProgressIndicator()
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
           return CustomScrollView(
@@ -62,7 +67,8 @@ class RestaurantDetailScreen extends StatelessWidget {
   SliverPadding renderLabel() {
     return const SliverPadding(
       padding: EdgeInsets.symmetric(horizontal: 16.0),
-      sliver: SliverToBoxAdapter( //일반 위젯
+      sliver: SliverToBoxAdapter(
+        //일반 위젯
         child: Text(
           '메뉴',
           style: TextStyle(

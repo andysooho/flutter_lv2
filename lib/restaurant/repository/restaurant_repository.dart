@@ -16,7 +16,7 @@ abstract class RestaurantRepository {
   // http://$ip/restaurant/$id
   @GET('/{id}')
   @Headers({
-    'authorization' : 'Bearer $token'
+    'accessToken' : 'true'
   })
   Future<RestaurantDetailModel> getRestaurantDetail({
     @Path() required String id,

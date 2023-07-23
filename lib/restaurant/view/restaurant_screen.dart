@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/const/data.dart';
+import 'package:flutter_lv2/common/dio/dio.dart';
 import 'package:flutter_lv2/restaurant/component/restaurant_card.dart';
 import 'package:flutter_lv2/restaurant/model/restaurant_model.dart';
 import 'package:flutter_lv2/restaurant/view/restaurant_detail_screen.dart';
@@ -10,6 +11,12 @@ class RestaurantScreen extends StatelessWidget {
 
   Future<List> paginateRestaurant() async {
     final dio = Dio();
+
+    dio.interceptors.add(
+      CustomInterceptor(
+        storage: storage,
+      ),
+    );
 
     final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
 
@@ -34,11 +41,10 @@ class RestaurantScreen extends StatelessWidget {
             child: FutureBuilder<List>(
               future: paginateRestaurant(),
               builder: (context, AsyncSnapshot<List> snapshot) {
-                print(snapshot.data);
-                print(snapshot.error);
+                // print(snapshot.data);
                 if (!snapshot.hasData) {
                   // 데이터가 없으면 로딩중
-                  return CircularProgressIndicator();
+                  return const CircularProgressIndicator();
                 }
 
                 return ListView.separated(
@@ -65,7 +71,7 @@ class RestaurantScreen extends StatelessWidget {
                     );
                   },
                   separatorBuilder: (_, index) {
-                    return SizedBox(height: 16.0);
+                    return const SizedBox(height: 16.0);
                   },
                 );
               },
