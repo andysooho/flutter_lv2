@@ -27,7 +27,7 @@ abstract class RestaurantRepository {
   @GET('/')
   @Headers({'accessToken': 'true'})
   Future<CursorPagination<RestaurantModel>> paginate({
-    @Queries() PaginationParams? params = const PaginationParams(),
+    @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 
   // http://$ip/restaurant/$id
