@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/layout/default_layout.dart';
+import 'package:flutter_lv2/common/model/cursor_pagination_model.dart';
+import 'package:flutter_lv2/common/utils/pagination_utils.dart';
 import 'package:flutter_lv2/product/component/product_card.dart';
 import 'package:flutter_lv2/rating/component/rating_card.dart';
+import 'package:flutter_lv2/rating/model/rating_model.dart';
 import 'package:flutter_lv2/restaurant/component/restaurant_card.dart';
 import 'package:flutter_lv2/restaurant/model/restaurant_detail_model.dart';
 import 'package:flutter_lv2/restaurant/model/restaurant_model.dart';
@@ -25,18 +28,27 @@ class RestaurantDetailScreen extends ConsumerStatefulWidget {
 
 class _RestaurantDetailScreenState
     extends ConsumerState<RestaurantDetailScreen> {
+  
+  final  ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
     ref.read(restaurantProvider.notifier).getDetail(id: widget.id);
+    _scrollController.addListener(addListener);
+  }
+
+  void addListener() {
+    PaginationUtils.paginate(
+      controller: _scrollController,
+      provider: ref.read(restaurantRatingProvider(widget.id).notifier),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
     final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
-
-    print('ratingsState: $ratingsState');
 
     if (state == null) {
       return const Center(
@@ -47,54 +59,60 @@ class _RestaurantDetailScreenState
     return DefaultLayout(
       title: '식당 상세',
       child: CustomScrollView(
+        controller: _scrollController,
         slivers: [
           renderTop(
             model: state,
           ),
-          if(state is! RestaurantDetailModel)
-          renderLoading(),
-          if(state is RestaurantDetailModel)
-          renderLabel(),
-          if(state is RestaurantDetailModel)
-          renderProducts(
-            products: state.products,
-          ),
-          const SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            sliver: SliverToBoxAdapter(
-              child: RatingCard(
-                  avatarImage: AssetImage('asset/img/logo/codefactory_logo.png'),
-                  images: [],
-                  rating: 4,
-                email: 'example@example.com',
-                content: 'This is a review. fldkjfldsjf dslfjlsdfj  dsfjsdiojflwejef jeof fowiefjowef jowiejf owejfo ew',
-              ),
+          if (state is! RestaurantDetailModel) renderLoading(),
+          if (state is RestaurantDetailModel) renderLabel(),
+          if (state is RestaurantDetailModel)
+            renderProducts(
+              products: state.products,
             ),
-          ),
+          if (ratingsState is CursorPagination<RatingModel>)
+            renderRatings(models: ratingsState.data),
         ],
+      ),
+    );
+  }
+
+  SliverPadding renderRatings({
+    required List<RatingModel> models,
+  }) {
+    return SliverPadding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+      sliver: SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (_, index) {
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: RatingCard.fromModel(
+                model: models[index],
+              ),
+            );
+          },
+          childCount: models.length,
+        ),
       ),
     );
   }
 
   SliverPadding renderLoading() {
     return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0,vertical: 16.0),
-      sliver: SliverList(
-        delegate: SliverChildListDelegate(
-          List.generate(
-            3,(index) => Padding(
-              padding: const EdgeInsets.only(bottom:32),
-              child: SkeletonParagraph(
-                style: const SkeletonParagraphStyle(
-                  lines: 5,
-                  padding: EdgeInsets.zero,
-                )
-              ),
-            ) 
-          )
-        ),
-      )
-    );
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+        sliver: SliverList(
+          delegate: SliverChildListDelegate(List.generate(
+              3,
+              (index) => Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: SkeletonParagraph(
+                        style: const SkeletonParagraphStyle(
+                      lines: 5,
+                      padding: EdgeInsets.zero,
+                    )),
+                  ))),
+        ));
   }
 
   SliverPadding renderLabel() {
