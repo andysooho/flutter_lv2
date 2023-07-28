@@ -4,14 +4,16 @@ import 'package:flutter_lv2/common/model/pagiantion_params.dart';
 import 'package:flutter_lv2/common/repository/base_pagiantion_repositiry.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PaginationProvider<
-T extends IModelWithId,
-U extends IBasePaginationRepository<T> > extends StateNotifier<CursorPaginationBase> {
+class PaginationProvider<T extends IModelWithId,
+        U extends IBasePaginationRepository<T>>
+    extends StateNotifier<CursorPaginationBase> {
   final U repository;
 
   PaginationProvider({
     required this.repository,
-  }) : super(CursorPaginationLoading());
+  }) : super(CursorPaginationLoading()) {
+    paginate();
+  }
 
   paginate({
     int fetchCount = 20,

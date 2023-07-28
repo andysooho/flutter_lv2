@@ -6,6 +6,7 @@ import 'package:flutter_lv2/restaurant/component/restaurant_card.dart';
 import 'package:flutter_lv2/restaurant/model/restaurant_detail_model.dart';
 import 'package:flutter_lv2/restaurant/model/restaurant_model.dart';
 import 'package:flutter_lv2/restaurant/provider/restaurant_provider.dart';
+import 'package:flutter_lv2/restaurant/provider/restaurant_rating_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:skeletons/skeletons.dart';
 
@@ -33,6 +34,9 @@ class _RestaurantDetailScreenState
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(restaurantDetailProvider(widget.id));
+    final ratingsState = ref.watch(restaurantRatingProvider(widget.id));
+
+    print('ratingsState: $ratingsState');
 
     if (state == null) {
       return const Center(
