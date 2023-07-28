@@ -1,4 +1,4 @@
-import 'package:flutter_lv2/common/layout/data_utils.dart';
+import 'package:flutter_lv2/common/utils/data_utils.dart';
 import 'package:flutter_lv2/restaurant/model/restaurant_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
