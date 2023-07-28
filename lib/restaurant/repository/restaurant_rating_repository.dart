@@ -3,6 +3,7 @@ import 'package:flutter_lv2/common/const/data.dart';
 import 'package:flutter_lv2/common/dio/dio.dart';
 import 'package:flutter_lv2/common/model/cursor_pagination_model.dart';
 import 'package:flutter_lv2/common/model/pagiantion_params.dart';
+import 'package:flutter_lv2/common/repository/base_pagiantion_repositiry.dart';
 import 'package:flutter_lv2/rating/model/rating_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:retrofit/retrofit.dart';
@@ -20,7 +21,8 @@ final RestaurantRatingRepositoryProvider =
 
 // http://$ip/restaurant/:rid/rating
 @RestApi()
-abstract class RestaurantRatingRepository {
+abstract class RestaurantRatingRepository
+    implements IBasePaginationRepository<RatingModel> {
   factory RestaurantRatingRepository(Dio dio, {String baseUrl}) =
       _RestaurantRatingRepository;
 
@@ -29,6 +31,6 @@ abstract class RestaurantRatingRepository {
     'accessToken': 'true',
   })
   Future<CursorPagination<RatingModel>> paginate({
-    @Queries() PaginationParams? params = const PaginationParams(),
+    @Queries() PaginationParams? paginationParams = const PaginationParams(),
   });
 }

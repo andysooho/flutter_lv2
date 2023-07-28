@@ -20,10 +20,10 @@ class _RestaurantRatingRepository implements RestaurantRatingRepository {
 
   @override
   Future<CursorPagination<RatingModel>> paginate(
-      {PaginationParams? params = const PaginationParams()}) async {
+      {PaginationParams? paginationParams = const PaginationParams()}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    queryParameters.addAll(params?.toJson() ?? <String, dynamic>{});
+    queryParameters.addAll(paginationParams?.toJson() ?? <String, dynamic>{});
     queryParameters.removeWhere((k, v) => v == null);
     final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
