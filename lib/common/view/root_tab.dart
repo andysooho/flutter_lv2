@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/const/colors.dart';
 import 'package:flutter_lv2/common/layout/default_layout.dart';
+import 'package:flutter_lv2/product/view/product_tab.dart';
 import 'package:flutter_lv2/restaurant/view/restaurant_screen.dart';
 
 class RootTab extends StatefulWidget {
@@ -17,7 +18,6 @@ class _RootTabState extends State<RootTab>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     controller = TabController(length: 4, vsync: this);
@@ -45,9 +45,7 @@ class _RootTabState extends State<RootTab>
         controller: controller,
         children: [
           RestaurantScreen(),
-          Container(
-            color: Colors.green,
-          ),
+          ProductTab(),
           Container(
             color: Colors.blue,
           ),
