@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/const/colors.dart';
 import 'package:flutter_lv2/common/layout/default_layout.dart';
-import 'package:flutter_lv2/product/view/product_tab.dart';
+import 'package:flutter_lv2/product/view/product_screen.dart';
 import 'package:flutter_lv2/restaurant/view/restaurant_screen.dart';
 
 class RootTab extends StatefulWidget {
@@ -11,8 +11,7 @@ class RootTab extends StatefulWidget {
   State<RootTab> createState() => _RootTabState();
 }
 
-class _RootTabState extends State<RootTab>
-    with SingleTickerProviderStateMixin {
+class _RootTabState extends State<RootTab> with SingleTickerProviderStateMixin {
   late TabController controller; //late는 나중에 초기화할거야
   int index = 0;
 
@@ -40,20 +39,6 @@ class _RootTabState extends State<RootTab>
   Widget build(BuildContext context) {
     return DefaultLayout(
       title: '딜리버리',
-      child: TabBarView(
-        physics: NeverScrollableScrollPhysics(), //스크롤 막기
-        controller: controller,
-        children: [
-          RestaurantScreen(),
-          ProductTab(),
-          Container(
-            color: Colors.blue,
-          ),
-          Container(
-            color: Colors.yellow,
-          ),
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         selectedItemColor: PRIMARY_COLOR,
         unselectedItemColor: Colors.grey,
@@ -68,7 +53,7 @@ class _RootTabState extends State<RootTab>
           // }); 일케 해도 네비바 누르면 바뀌긴 함
         },
         currentIndex: index,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
             label: '홈',
@@ -84,6 +69,20 @@ class _RootTabState extends State<RootTab>
           BottomNavigationBarItem(
             icon: Icon(Icons.person_outlined),
             label: '프로필',
+          ),
+        ],
+      ),
+      child: TabBarView(
+        physics: const NeverScrollableScrollPhysics(), //스크롤 막기
+        controller: controller,
+        children: [
+          const RestaurantScreen(),
+          ProductScreen(),
+          Container(
+            color: Colors.blue,
+          ),
+          Container(
+            color: Colors.yellow,
           ),
         ],
       ),
