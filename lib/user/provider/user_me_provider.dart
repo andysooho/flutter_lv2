@@ -84,13 +84,13 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
   Future<void> logout() async {
     state = null;
 
-    // await storage.deleteAll();
+    await storage.deleteAll();
 
-    await Future.wait(
-      [
-        storage.delete(key: REFRESH_TOKEN_KEY),
-        storage.delete(key: ACCESS_TOKEN_KEY),
-      ],
-    );
+    // await Future.wait(
+    //   [
+    //     storage.delete(key: REFRESH_TOKEN_KEY),
+    //     storage.delete(key: ACCESS_TOKEN_KEY),
+    //   ],
+    // );
   }
 }

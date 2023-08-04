@@ -6,6 +6,7 @@ import 'package:flutter_lv2/user/model/user_model.dart';
 import 'package:flutter_lv2/user/provider/user_me_provider.dart';
 import 'package:flutter_lv2/user/view/splash_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -64,12 +65,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           username: username,
                           password: password,
                         );
+                    
+                    context.goNamed(SplashScreen.routeName);
 
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (_) => const SplashScreen(),
-                      ),
-                    );
+                    // Navigator.of(context).push(
+                    //   MaterialPageRoute(
+                    //     builder: (_) => const SplashScreen(),
+                    //   ),
+                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,
