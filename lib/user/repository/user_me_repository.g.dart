@@ -22,7 +22,7 @@ class _UserMeRepository implements UserMeRepository {
   Future<UserModel> getMe() async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{r'accesToken': 'true'};
+    final _headers = <String, dynamic>{r'accessToken': 'true'};
     _headers.removeWhere((k, v) => v == null);
     final Map<String, dynamic>? _data = null;
     final _result = await _dio

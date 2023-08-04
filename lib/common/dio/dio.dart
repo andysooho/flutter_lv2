@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_lv2/common/const/data.dart';
+import 'package:flutter_lv2/user/provider/auth_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
@@ -11,6 +12,7 @@ final dioProvider = Provider<Dio>((ref) {
   dio.interceptors.add(
     CustomInterceptor(
       storage: ref.watch(secureStorageProvider),
+      ref: ref,
     ),
   );
 
@@ -19,9 +21,11 @@ final dioProvider = Provider<Dio>((ref) {
 
 class CustomInterceptor extends Interceptor {
   final FlutterSecureStorage storage;
+  final Ref ref;
 
   CustomInterceptor({
     required this.storage,
+    required this.ref,
   });
 
   // 1. 요청을  보낼때
@@ -77,7 +81,7 @@ class CustomInterceptor extends Interceptor {
     final isStatus401 = err.response?.statusCode == 401;
     final isPathRefresh = err.requestOptions.path == '/auth/token';
 
-    if (isStatus401 && isPathRefresh == false) {
+    if (isStatus401 && !isPathRefresh) {
       final dio = Dio();
 
       try {
@@ -105,6 +109,10 @@ class CustomInterceptor extends Interceptor {
 
         return handler.resolve(response);
       } on DioException catch (e) {
+        //Circular dependency error
+        //usermeprovider -> dio -> usermeprovider -> dio -> ...
+        //ref.read(userMeProvider.notifier).logout();
+        ref.read(authProvider.notifier).logout();
         return handler.reject(e);
       }
     }

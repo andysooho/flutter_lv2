@@ -10,6 +10,7 @@ import '../../common/dio/dio.dart';
 final authRepositoryProvider = Provider<AuthRepository>(
   (ref) {
     final dio = ref.watch(dioProvider);
+
     return AuthRepository(dio: dio, baseUrl: 'http://$ip/auth');
   },
 );
@@ -34,7 +35,7 @@ class AuthRepository {
       '$baseUrl/login',
       options: Options(
         headers: {
-          'authorization':'Basic $serialized',
+          'authorization': 'Basic $serialized',
         },
       ),
     );

@@ -67,12 +67,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         );
                     
                     context.goNamed(SplashScreen.routeName);
-
-                    // Navigator.of(context).push(
-                    //   MaterialPageRoute(
-                    //     builder: (_) => const SplashScreen(),
-                    //   ),
-                    // );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,

@@ -43,14 +43,16 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
       return;
     }
 
-    try {
-      final resp = await userMeRepository.getMe();
-      state = resp;
-    } catch (e, stack) {
-      print(e);
-      print(stack);
-      state = null;
-    }
+    final resp = await userMeRepository.getMe();
+    state = resp;
+    // try {
+    //   final resp = await repository.getMe();
+    //   state = resp;
+    // } catch (e, stack) {
+    //   print(e);
+    //   print(stack);
+    //   state = null;
+    // }
   }
 
   Future<UserModelBase> login({
@@ -84,13 +86,12 @@ class UserMeStateNotifier extends StateNotifier<UserModelBase?> {
   Future<void> logout() async {
     state = null;
 
-    await storage.deleteAll();
-
-    // await Future.wait(
-    //   [
-    //     storage.delete(key: REFRESH_TOKEN_KEY),
-    //     storage.delete(key: ACCESS_TOKEN_KEY),
-    //   ],
-    // );
+    // await storage.deleteAll();
+    await Future.wait(
+      [
+        storage.delete(key: REFRESH_TOKEN_KEY),
+        storage.delete(key: ACCESS_TOKEN_KEY),
+      ],
+    );
   }
 }

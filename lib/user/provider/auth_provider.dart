@@ -27,18 +27,19 @@ class AuthProvider extends ChangeNotifier {
 
   List<GoRoute> get routes => [
         GoRoute(
-            path: '/',
-            name: RootTab.routeName,
-            builder: (_, __) => const RootTab(),
-            routes: [
-              GoRoute(
-                path: 'restaurant/:rid',
-                name: RestaurantDetailScreen.routeName,
-                builder: (_, state) => RestaurantDetailScreen(
-                  id: state.pathParameters['rid']!,
-                ),
+          path: '/',
+          name: RootTab.routeName,
+          builder: (_, __) => const RootTab(),
+          routes: [
+            GoRoute(
+              path: 'restaurant/:rid',
+              name: RestaurantDetailScreen.routeName,
+              builder: (_, state) => RestaurantDetailScreen(
+                id: state.pathParameters['rid']!,
               ),
-            ]),
+            ),
+          ],
+        ),
         GoRoute(
           path: '/splash',
           name: SplashScreen.routeName,
@@ -50,6 +51,10 @@ class AuthProvider extends ChangeNotifier {
           builder: (_, __) => const LoginScreen(),
         ),
       ];
+
+  void logout() {
+    ref.read(userMeProvider.notifier).logout();
+  }
 
   //SplashScreen
   // 앱 처음 시작했을때, 토큰이 존재하는 지 확인하고

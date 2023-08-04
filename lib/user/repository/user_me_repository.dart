@@ -21,7 +21,7 @@ abstract class UserMeRepository {
 
   @GET('/')
   @Headers({
-    'accesToken': "true",
+    'accessToken': "true",
   })
   Future<UserModel> getMe();
 }
