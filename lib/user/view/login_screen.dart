@@ -1,19 +1,16 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/component/custom_text_form_field.dart';
 import 'package:flutter_lv2/common/const/colors.dart';
-import 'package:flutter_lv2/common/const/data.dart';
 import 'package:flutter_lv2/common/layout/default_layout.dart';
-import 'package:flutter_lv2/common/secure_storage/secure_storage.dart';
+import 'package:flutter_lv2/user/model/user_model.dart';
+import 'package:flutter_lv2/user/provider/user_me_provider.dart';
 import 'package:flutter_lv2/user/view/splash_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-//나중에 규모 커지만 모든 페이지에 공통적으로 적용하고 싶은 기능이 생길 것.
-//그래서 모든 View를 DefaultLayout으로 감싸서 사용하는걸 권장.
 
 class LoginScreen extends ConsumerStatefulWidget {
+  static String get routeName => 'login';
+
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -21,18 +18,16 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
-  String username = '';
-  String password = '';
+  String username = 'test@codefactory.ai'; // ''
+  String password = 'testtest'; // ''
 
   @override
   Widget build(BuildContext context) {
-    final dio = Dio();
+    final state = ref.watch(userMeProvider);
 
     return DefaultLayout(
-      child: SingleChildScrollView(
-        //키보드 올리면 화면이 잘림 제일 쉬운 해결방법중 하나는은 스크롤 가능하게 만들기
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-        //화면 드랙그 하면 키보드 내려감
+      child: SingleChildScrollView( //키보드 올리면 화면이 잘림 제일 쉬운 해결방법중 하나는은 스크롤 가능하게 만들기
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag, //화면 드랙그 하면 키보드 내려감
         child: SafeArea(
           top: true,
           bottom: false,
@@ -64,32 +59,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 const SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () async {
-                    //ID:password
-                    final rawString = 'test@codefactory.ai:testtest';
-                    //final rawString = '$username:$password'; //귀차나서 보안 없앰
-                    //base64로 인코딩
-                    Codec<String, String> stringToBase64 = utf8.fuse(base64);
-                    String token = stringToBase64.encode(rawString);
-                    //헤더에 넣어서 보내기
-                    final resp = await dio.post(
-                      'http://$ip/auth/login',
-                      options: Options(
-                        headers: {
-                          'authorization': 'Basic $token',
-                        },
-                      ),
-                    );
-
-                    final storage = ref.read(secureStorageProvider);
-
-                    final refreshToken = resp.data['refreshToken'];
-                    final accessToken = resp.data['accessToken'];
-
-                    await storage.write(
-                        key: REFRESH_TOKEN_KEY, value: refreshToken);
-                    await storage.write(
-                        key: ACCESS_TOKEN_KEY, value: accessToken);
+                  onPressed: state is UserModelLoading ? null : () async {
+                    ref.read(userMeProvider.notifier).login(
+                          username: username,
+                          password: password,
+                        );
 
                     Navigator.of(context).push(
                       MaterialPageRoute(

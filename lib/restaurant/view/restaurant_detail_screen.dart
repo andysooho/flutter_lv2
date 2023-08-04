@@ -15,6 +15,7 @@ import 'package:skeletons/skeletons.dart';
 
 class RestaurantDetailScreen extends ConsumerStatefulWidget {
   final String id; //클릭한 식당의 id
+  static String get routeName => 'restaruantDetail';
 
   const RestaurantDetailScreen({
     required this.id,
