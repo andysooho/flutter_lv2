@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_lv2/common/view/root_tab.dart';
+import 'package:flutter_lv2/order/view/order_done_screen.dart';
 import 'package:flutter_lv2/restaurant/view/basket_screen.dart';
 import 'package:flutter_lv2/restaurant/view/restaurant_detail_screen.dart';
 import 'package:flutter_lv2/user/model/user_model.dart';
@@ -42,10 +43,15 @@ class AuthProvider extends ChangeNotifier {
           ],
         ),
         GoRoute(
-              path: '/basket',
-              name: BasketScreen.routeName,
-              builder: (_, state) => const BasketScreen(),
-            ),
+          path: '/basket',
+          name: BasketScreen.routeName,
+          builder: (_, state) => const BasketScreen(),
+        ),
+        GoRoute(
+          path: '/order_done',
+          name: OrderDoneScreen.routeName,
+          builder: (_, state) => const OrderDoneScreen(),
+        ),
         GoRoute(
           path: '/splash',
           name: SplashScreen.routeName,
