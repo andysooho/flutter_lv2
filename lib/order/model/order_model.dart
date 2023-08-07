@@ -10,15 +10,17 @@ class OrderProductModel {
   final String id;
   final String name;
   final String detail;
-  @JsonKey(fromJson: DataUtils.pathToUrl)
-  final String imageUrl;
+  @JsonKey(
+    fromJson: DataUtils.pathToUrl,
+  )
+  final String imgUrl;
   final int price;
 
   OrderProductModel({
     required this.id,
     required this.name,
     required this.detail,
-    required this.imageUrl,
+    required this.imgUrl,
     required this.price,
   });
 

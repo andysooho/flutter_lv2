@@ -6,12 +6,13 @@ import 'package:flutter_lv2/common/utils/pagination_utils.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 typedef PaginationWidgetBuilder<T extends IModelWithId> = Widget Function(
-  BuildContext context, int index, T model,
+  BuildContext context,
+  int index,
+  T model,
 );
 
 class PagiantionListView<T extends IModelWithId>
     extends ConsumerStatefulWidget {
-      
   final StateNotifierProvider<PaginationProvider, CursorPaginationBase>
       provider;
 
@@ -28,7 +29,8 @@ class PagiantionListView<T extends IModelWithId>
       _PagiantionListViewState<T>();
 }
 
-class _PagiantionListViewState<T extends IModelWithId> extends ConsumerState<PagiantionListView> {
+class _PagiantionListViewState<T extends IModelWithId>
+    extends ConsumerState<PagiantionListView> {
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -90,28 +92,36 @@ class _PagiantionListViewState<T extends IModelWithId> extends ConsumerState<Pag
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ListView.separated(
-        controller: _scrollController,
-        itemCount: cp.data.length + 1, // +1 : progress indicator
-        itemBuilder: (_, index) {
-          if (index == cp.data.length) {
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Center(
-                child: cp is CursorPaginationFetchingMore
-                    ? const CircularProgressIndicator()
-                    : const Text('마지막 데이터 입니다.'),
-              ),
-            );
-          }
-
-          final pItem = cp.data[index];
-
-          return widget.itemBuilder(context, index, pItem);
+      child: RefreshIndicator(
+        onRefresh: () async {
+          ref.read(widget.provider.notifier).paginate(
+                forceRefetch: false, //true 하면 데이터 안보이고 리프레시 됨
+              );
         },
-        separatorBuilder: (_, index) {
-          return const SizedBox(height: 16.0);
-        },
+        child: ListView.separated(
+          physics: const AlwaysScrollableScrollPhysics(), //개수 적어도 스크롤 가능하게
+          controller: _scrollController,
+          itemCount: cp.data.length + 1, // +1 : progress indicator
+          itemBuilder: (_, index) {
+            if (index == cp.data.length) {
+              return Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Center(
+                  child: cp is CursorPaginationFetchingMore
+                      ? const CircularProgressIndicator()
+                      : const Text('마지막 데이터 입니다.'),
+                ),
+              );
+            }
+
+            final pItem = cp.data[index];
+
+            return widget.itemBuilder(context, index, pItem);
+          },
+          separatorBuilder: (_, index) {
+            return const SizedBox(height: 16.0);
+          },
+        ),
       ),
     );
   }
